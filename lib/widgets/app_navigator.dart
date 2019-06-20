@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sliver_scaffold/sliver_scaffold.dart';
+
 
 class AppNavigator extends StatelessWidget {
 
@@ -27,12 +29,15 @@ class AppNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     final actions = this._buildActions();
     final tabs = this._buildTabs(MediaQuery.of(context).size);
+
     return DefaultTabController(
       initialIndex: 1,
       length : tabs.length,
-      child: Scaffold(
-        appBar: AppBar(
+      child: SliverScaffold(
+        sliverAppBar: SliverAppBar(
           title: const Text('WhatsApp'),
+          pinned: true,
+          floating: true,
           actions: actions,
           bottom: TabBar(
             tabs: tabs, 
@@ -41,6 +46,7 @@ class AppNavigator extends StatelessWidget {
           ),
           backgroundColor: Color(0xff075e54),
         ),
+
         body: TabBarView(
           children: <Widget>[
             cameraWidget,
