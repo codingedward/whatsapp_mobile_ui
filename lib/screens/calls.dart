@@ -1,9 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import 'package:badges/badges.dart';
 
-class ChatList extends StatelessWidget {
+class CallList extends StatelessWidget {
 
   final _random = Random();
 
@@ -18,11 +17,7 @@ class ChatList extends StatelessWidget {
   }
 
   Widget _buildListItem() {
-    final hasBadge = this._random.nextBool();
-    final isMute = this._random.nextBool();
-    final badgesCount = this._random.nextInt(10) + 1;
-    final sentStatus = this._random.nextInt(4);
-
+    final missed = _random.nextBool();
     return Container(
       padding: EdgeInsets.only(right: 10, left: 15),
       child: Row(
@@ -60,42 +55,23 @@ class ChatList extends StatelessWidget {
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      Text(
-                        'Yesterday',
-                        style: TextStyle(
-                          color: hasBadge ? Colors.green : Colors.grey[600]
-                        ),
-                      )
                     ],
                   ),
                   SizedBox(height: 10,),
                   Row(
                     children: <Widget>[
-                      this._buildSentStatus(sentStatus),
-                      SizedBox(width: 3),
+                      missed 
+                        ? Icon(Icons.call_made, color: Color(0xff25d366))
+                        : Icon(Icons.call_missed_outgoing, color: Colors.red[600]),
                       Expanded(
                         child: Text(
-                          'Hi man 🐣 😂😂😂, I will reach out to you as soon as we end the call',
+                          'May 12, 5:40 PM',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: Colors.black87,
                             fontSize: 15,
                           ),
                         )
-                      ),
-                      if (isMute) Icon(Icons.volume_off, color: Colors.grey,),
-                      if (hasBadge) SizedBox(width: 5),
-                      if (hasBadge) Badge(
-                        elevation: 0,
-                        padding: EdgeInsets.all(8),
-                        badgeColor: Color(0xff25d366),
-                        badgeContent: Text(
-                          badgesCount.toString(), 
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -106,17 +82,9 @@ class ChatList extends StatelessWidget {
               )
             ),
           ),
+          Icon(Icons.call, color: Color(0xff25d366),)
         ],
       ),
     );
-  }
-
-  _buildSentStatus(int status) {
-    switch (status) {
-      case 0: return Icon(Icons.access_time, color: Colors.grey, size: 20,);
-      case 1: return Icon(Icons.done, color: Colors.grey, size: 20,);
-      case 2: return Icon(Icons.done_all, color: Colors.grey, size: 20,);
-      case 3: return Icon(Icons.done_all, color: Colors.blue, size: 20,);
-    }
   }
 }
