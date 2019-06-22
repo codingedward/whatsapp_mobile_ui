@@ -12,10 +12,6 @@ Future<void> main() async {
   runApp(
     MaterialApp( 
       home: AppNavigator(
-        onChatsTab: () {},
-        onCallsTab: () {},
-        onCameraTab: () {},
-        onStatusTab: () {},
         chatsWidget: ChatList(),
         callsWidget: CallList(),
         statusWidget: StatusList(),
