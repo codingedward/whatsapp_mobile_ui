@@ -1,6 +1,7 @@
-import 'package:flutter/gestures.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:sliver_scaffold/sliver_scaffold.dart';
+import 'package:flutter/services.dart';
 
 
 class AppNavigator extends StatefulWidget {
@@ -23,25 +24,42 @@ class AppNavigator extends StatefulWidget {
 
 class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderStateMixin {
 
-  bool _appBarShown = true;
-  TabController _controller;
+  bool _pinned = true;
+  bool _camera = false;
+  Timer _cameraTimer;
+  TabController _tabController;
+  ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    _controller = TabController(initialIndex: 1, vsync: this, length: 4);
-    _controller.addListener(_handleTabChange);
+    _tabController = TabController(initialIndex: 1, vsync: this, length: 4);
+    _tabController.animation.addListener(_handleChangeToCameraTab);
+    _scrollController = ScrollController();
   }
 
-  void _handleTabChange() {
+  void _handleChangeToCameraTab() {
+    final value = _tabController.animation.value;
     setState(() {
-      _appBarShown = !_controller.indexIsChanging && _controller.index != 0;
+      if (value < 1) {
+        _scrollController.jumpTo(
+          _scrollController.position.maxScrollExtent * (1.0 - value)
+        );
+      }
+      _pinned = value >= 1.0;
     });
+
+    _cameraTimer?.cancel();
+    _cameraTimer = Timer(Duration(milliseconds: 500), () => setState(() {
+      _camera = value == 0;
+    }));
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _tabController.dispose();
+    _scrollController.dispose();
+    _cameraTimer?.cancel();
     super.dispose();
   }
 
@@ -50,30 +68,44 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
     final actions = this._buildActions(context);
     final tabs = this._buildTabs(MediaQuery.of(context).size);
 
-    return SliverScaffold(
-      topRadius: 0,
-      sliverAppBar: SliverAppBar(
-        title: const Text('WhatsApp'),
-        pinned: _appBarShown,
-        floating: _appBarShown,
-        actions: actions,
-        bottom: TabBar(
-          tabs: tabs, 
-          isScrollable: true,
-          indicatorColor: Colors.white,
-          controller: _controller,
+    return Scaffold(
+      body: NestedScrollView(
+        controller: _scrollController,
+        headerSliverBuilder: (context, inner) {
+          return <Widget>[
+            SliverAppBar(
+              title: const Text('WhatsApp'),
+              pinned: _pinned,
+              floating: true,
+              actions: actions,
+              bottom: TabBar(
+                tabs: tabs, 
+                isScrollable: true,
+                indicatorColor: Colors.white,
+                controller: _tabController,
+              ),
+              backgroundColor: Color(0xff075e54),
+            ),
+          ];
+        },
+        body: TabBarView(
+          controller: _tabController,
+          children: <Widget>[
+            _camera ? widget.cameraWidget : Container(
+              child: Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                )
+              ),
+              decoration: BoxDecoration(
+                color: Colors.black
+              ),
+            ),
+            widget.chatsWidget,
+            widget.statusWidget,
+            widget.callsWidget,
+          ],
         ),
-        backgroundColor: Color(0xff075e54),
-      ),
-      body: TabBarView(
-        controller: _controller,
-        dragStartBehavior: DragStartBehavior.down,
-        children: <Widget>[
-          widget.cameraWidget,
-          widget.chatsWidget,
-          widget.statusWidget,
-          widget.callsWidget,
-        ],
       ),
     );
   }
