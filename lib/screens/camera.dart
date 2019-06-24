@@ -16,37 +16,59 @@ class CameraWidget extends StatefulWidget {
 }
 
 class TakePictureScreenState extends State<CameraWidget> {
-  CameraController _controller;
+  CameraController controller;
+  Future<void> _initializeControllerFuture;
 
   @override
   void initState() {
     super.initState();
-    _controller = CameraController(
+    controller = CameraController(
       widget.camera,
-      ResolutionPreset.medium,
+      ResolutionPreset.high,
     );
-    _controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
+    _initializeControllerFuture = controller.initialize();
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_controller.value.isInitialized) {
-      return Center(child: CircularProgressIndicator());
-    }
-    return AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: CameraPreview(_controller),
+    return FutureBuilder<void>(
+      future: _initializeControllerFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          final size = MediaQuery.of(context).size;
+          return ClipRect(
+            child: Container(
+              child: Transform.scale(
+                scale: controller.value.aspectRatio / size.aspectRatio,
+                child: Center(
+                  child: AspectRatio(
+                    aspectRatio: controller.value.aspectRatio,
+                    child: CameraPreview(controller),
+                  ),
+                ),
+              ),
+            ),
+          );
+        } else {
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.white,
+              )
+            ),
+            decoration: BoxDecoration(
+              color: Colors.black
+            ),
+          );
+        }
+      },
     );
+       
   }
 }

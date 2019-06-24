@@ -28,6 +28,7 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
   bool _camera = false;
   Timer _cameraTimer;
   TabController _tabController;
+  bool _disableScrolling = false;
   ScrollController _scrollController;
 
   @override
@@ -36,7 +37,17 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
     _tabController = TabController(initialIndex: 1, vsync: this, length: 4);
     _tabController.animation.addListener(_handleChangeToCameraTab);
     _scrollController = ScrollController();
+    _scrollController.addListener(_disableScrollingOnCameraTab);
   }
+
+  void _disableScrollingOnCameraTab() {
+    _scrollController.removeListener(_disableScrollingOnCameraTab);
+    if (_disableScrolling) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    }
+    _scrollController.addListener(_disableScrollingOnCameraTab);
+  }
+
 
   void _handleChangeToCameraTab() {
     final value = _tabController.animation.value;
@@ -47,12 +58,15 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
         );
       }
       _pinned = value >= 1.0;
+      _disableScrolling = value == 0.0;
     });
 
-    _cameraTimer?.cancel();
-    _cameraTimer = Timer(Duration(milliseconds: 500), () => setState(() {
-      _camera = value == 0;
-    }));
+    if (!_camera) {
+      _cameraTimer?.cancel();
+      _cameraTimer = Timer(Duration(milliseconds: 500), () => setState(() {
+        _camera = value == 0;
+      }));
+    }
   }
 
   @override
@@ -113,7 +127,7 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
   List<Widget> _buildTabs(Size deviceSize) {
     var width = (deviceSize.width - 150) / 3;
     return <Widget>[
-      SizedBox(child: Tab(icon: Icon(Icons.camera_alt)), width: 22),
+      const SizedBox(child: Tab(icon: Icon(Icons.camera_alt)), width: 22),
       SizedBox(child: Tab(text: 'CHATS',), width: width),
       SizedBox(child: Tab(text: 'STATUS',), width: width),
       SizedBox(child: Tab(text: 'CALLS',), width: width),
