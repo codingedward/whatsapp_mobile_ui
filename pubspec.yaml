@@ -49,6 +49,7 @@ flutter:
 
   assets:
     - lib/assets/imgs/avatar_contact.png
+    - lib/assets/imgs/chat_background.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

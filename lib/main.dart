@@ -16,7 +16,7 @@ Future<void> main() async {
         callsWidget: CallList(),
         statusWidget: StatusList(),
         cameraWidget: CameraWidget(camera: cameras.first),
-      )
+      ),
     )
   );
 }

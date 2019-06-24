@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 
 class AppNavigator extends StatefulWidget {
   const AppNavigator({
@@ -41,13 +39,13 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
   }
 
   void _disableScrollingOnCameraTab() {
-    _scrollController.removeListener(_disableScrollingOnCameraTab);
     if (_disableScrolling) {
+      // avoid infinite loop calls...
+      _scrollController.removeListener(_disableScrollingOnCameraTab);
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      _scrollController.addListener(_disableScrollingOnCameraTab);
     }
-    _scrollController.addListener(_disableScrollingOnCameraTab);
   }
-
 
   void _handleChangeToCameraTab() {
     final value = _tabController.animation.value;
@@ -57,13 +55,15 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
           _scrollController.position.maxScrollExtent * (1.0 - value)
         );
       }
-      _pinned = value >= 1.0;
-      _disableScrolling = value == 0.0;
+      _pinned = value >= 1.0; // animating to camera tab
+      _disableScrolling = value == 0.0; // camera tab
     });
 
     if (!_camera) {
+      // We have to use a timer since the camera takes time to get 
+      // initialized and can give a slow feel...
       _cameraTimer?.cancel();
-      _cameraTimer = Timer(Duration(milliseconds: 500), () => setState(() {
+      _cameraTimer = Timer(Duration(milliseconds: 200), () => setState(() {
         _camera = value == 0;
       }));
     }
