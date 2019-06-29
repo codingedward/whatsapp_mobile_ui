@@ -59,14 +59,12 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
       _disableScrolling = value == 0.0; // camera tab
     });
 
-    if (!_camera) {
-      // We have to use a timer since the camera takes time to get 
-      // initialized and can give a slow feel...
-      _cameraTimer?.cancel();
-      _cameraTimer = Timer(Duration(milliseconds: 200), () => setState(() {
-        _camera = value == 0;
-      }));
-    }
+    // We have to use a timer since the camera takes time to get 
+    // initialized and can give a slow feel...
+    _cameraTimer?.cancel();
+    _cameraTimer = Timer(Duration(milliseconds: 100), () => setState(() {
+      _camera = value == 0;
+    }));
   }
 
   @override

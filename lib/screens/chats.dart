@@ -2,7 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:badges/badges.dart';
+
 import 'chat.dart';
+import '../widgets/emoji_text.dart';
 
 class ChatList extends StatelessWidget {
 
@@ -82,14 +84,10 @@ class ChatList extends StatelessWidget {
                         this._buildSentStatus(sentStatus),
                         SizedBox(width: 3),
                         Expanded(
-                          child: Text(
-                            'Hi man 🐣 😂😂😂, I will reach out to you as soon as we end the call',
+                          child: EmojiText(
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 15,
-                            ),
-                          )
+                            text: _randomText(),
+                          ),
                         ),
                         if (isMute) Icon(Icons.volume_off, color: Colors.grey,),
                         if (hasBadge) SizedBox(width: 5),
@@ -127,5 +125,13 @@ class ChatList extends StatelessWidget {
       case 2: return Icon(Icons.done_all, color: Colors.grey, size: 20,);
       case 3: return Icon(Icons.done_all, color: Colors.blue, size: 20,);
     }
+  }
+
+  String _randomText() {
+    return [
+      'Hi man 🦙️ 🏳️\u200d🌈🐣😂😂, I will reach out as soon as we end the call',
+      '😂😂😂😂😂',
+      'Yeah totally',
+    ][_random.nextInt(3)];
   }
 }

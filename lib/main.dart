@@ -8,6 +8,7 @@ import 'screens/calls.dart' show CallList;
 import 'screens/camera.dart' show CameraWidget;
 
 Future<void> main() async {
+
   final cameras = await availableCameras();
   runApp(
     MaterialApp( 

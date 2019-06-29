@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-
 class Chat extends StatelessWidget {
   final _random = Random();
 
@@ -207,7 +206,7 @@ class Chat extends StatelessWidget {
                     width: 15,
                     height: 20,
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration:  BoxDecoration(
                         color: Colors.white,
                       ),
                     ),
