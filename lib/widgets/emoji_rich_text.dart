@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class EmojiText extends StatelessWidget{
+class EmojiRichText extends StatelessWidget{
 
-  const EmojiText({
+  const EmojiRichText({
     Key key,
     @required this.text,
     this.textAlign = TextAlign.start,
@@ -51,8 +51,8 @@ class EmojiText extends StatelessWidget{
 
   TextSpan _buildText(String text) {
     final children = <TextSpan>[]; 
-
     final runes = text.runes;
+
     for (int i = 0; i < runes.length; /* empty */ ) {
       int current = runes.elementAt(i);
       final isEmoji = current > 255;

@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'widgets/message_input.dart';
+import '../../widgets/emoji_rich_text.dart';
+
 class Chat extends StatelessWidget {
   final _random = Random();
 
@@ -29,7 +32,7 @@ class Chat extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             SizedBox(width: 10,),
-            Text('Doe'),
+            Text('Lucy Doe'),
           ]
         ),
         backgroundColor: Color(0xff075e54),
@@ -55,59 +58,10 @@ class Chat extends StatelessWidget {
                 },
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30)
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.tag_faces, color: Colors.black54,),
-                          ),
-                          const Expanded(
-                            child: const TextField(
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Type a message'
-                              ),
-                            ),
-                          ),
-                          Transform.rotate(
-                            angle: -pi / 4,
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.attach_file, color: Colors.black54),
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.photo_camera, color: Colors.black54,),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Color(0xff075e54),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.mic),
-                      color: Colors.white,
-                    )
-                  )
-                ],
-              ),
+            MessageInput(
+              onTextChange: () {},
+              onCamera: () {},
+              onAttachment: () {},
             ),
           ],
         ),
@@ -138,13 +92,7 @@ class Chat extends StatelessWidget {
                 ),
                 color: Color(0xffdcf8c6),
               ),
-              child: Text(
-                _getRandomText(),
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 15,
-                ),
-              ),
+              child: EmojiRichText(text: _getRandomText(), fontSize: 15,),
             ),
             Positioned(
               right: 0,
@@ -195,7 +143,7 @@ class Chat extends StatelessWidget {
                 ),
                 color: Colors.white,
               ),
-              child: Text(_getRandomText()),
+              child: EmojiRichText(text: _getRandomText(), fontSize: 15,),
             ),
             ClipRect(
               clipper: ChatBoxTriangleClip(),
@@ -223,7 +171,7 @@ class Chat extends StatelessWidget {
   List<Widget> _buildActions() {
     return <Widget>[
       IconButton(
-        icon: const Icon(Icons.video_call),
+        icon: const Icon(Icons.videocam),
         onPressed: () {},
         tooltip: 'Video call',
       ),

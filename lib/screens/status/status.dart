@@ -53,14 +53,14 @@ class StatusList extends StatelessWidget {
                   child: Image.asset(
                     'lib/assets/imgs/avatar_contact.png',
                     fit: BoxFit.cover,
-                    width: 60,
-                    height: 60,
+                    width: 55,
+                    height: 55,
                   ),
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(27.5),
                 ),
                 Positioned(
-                  left: 40,
-                  top: 30,
+                  left: 35,
+                  top: 25,
                   child: Badge(
                     elevation: 0,
                     padding: EdgeInsets.all(3),
@@ -134,13 +134,13 @@ class StatusList extends StatelessWidget {
             padding: EdgeInsets.only(right: 10),
             child: ClipRRect(
               child: FadeInImage(
-                image: NetworkImage('http://placekitten.com/60/60'),
+                image: NetworkImage('http://placekitten.com/55/55'),
                 placeholder: AssetImage('lib/assets/imgs/avatar_contact.png'),
                 fit: BoxFit.cover,
-                width: 60,
-                height: 60,
+                width: 55,
+                height: 55,
               ),
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(27.5),
             ),
           ),
           Expanded(

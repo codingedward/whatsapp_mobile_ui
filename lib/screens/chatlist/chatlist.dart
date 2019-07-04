@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:badges/badges.dart';
 
-import 'chat.dart';
-import '../widgets/emoji_text.dart';
+import '../../screens/chat/chat.dart';
+import '../../widgets/emoji_rich_text.dart';
 
 class ChatList extends StatelessWidget {
 
@@ -84,7 +84,7 @@ class ChatList extends StatelessWidget {
                         this._buildSentStatus(sentStatus),
                         SizedBox(width: 3),
                         Expanded(
-                          child: EmojiText(
+                          child: EmojiRichText(
                             overflow: TextOverflow.ellipsis,
                             text: _randomText(),
                           ),

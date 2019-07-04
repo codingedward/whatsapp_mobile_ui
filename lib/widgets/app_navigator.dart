@@ -49,12 +49,13 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
 
   void _handleChangeToCameraTab() {
     final value = _tabController.animation.value;
+    if (value < 1) {
+      _scrollController.jumpTo(
+        _scrollController.position.maxScrollExtent * (1.0 - value)
+      );
+    }
+
     setState(() {
-      if (value < 1) {
-        _scrollController.jumpTo(
-          _scrollController.position.maxScrollExtent * (1.0 - value)
-        );
-      }
       _pinned = value >= 1.0; // animating to camera tab
       _disableScrolling = value == 0.0; // camera tab
     });
