@@ -66,7 +66,6 @@ class EmojiRichText extends StatelessWidget{
         if (++i >= runes.length) break;
         current = runes.elementAt(i);
       }
-
       children.add(
         TextSpan(
           text: String.fromCharCodes(chunk),

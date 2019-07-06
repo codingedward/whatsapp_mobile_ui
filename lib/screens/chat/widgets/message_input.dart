@@ -26,6 +26,9 @@ class MessageInput extends StatefulWidget {
 }
 
 class _MessageInputState extends State<MessageInput> with SingleTickerProviderStateMixin {
+  Animation _animation;
+  NoKeyboardFocusNode _focusNode;
+  bool _noTextMode = true;
   bool _emojiInputShown = false;
   AnimationController _animationController;
   TextEditingControllerWithPosition _textController;
@@ -33,17 +36,36 @@ class _MessageInputState extends State<MessageInput> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    _textController = TextEditingControllerWithPosition();
     _animationController = AnimationController(
       vsync: this, 
-      duration: Duration(milliseconds: 200),
-    )..repeat();
+      duration: Duration(milliseconds: 200)
+    );
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
+        setState(() {
+          _noTextMode = _textController.text.isEmpty;
+        });
+      }
+    });
+
+    _textController = TextEditingControllerWithPosition();
+    _textController.addListener(() {
+      if (_textController.text.isEmpty) {
+        _animationController.reverse();
+      } else {
+        _animationController.forward();
+      }
+    });
+    _animation = Tween(begin: 0.0, end: 1.0).animate(
+      CurveTween(
+        curve: Curves.easeOutCubic
+      ).animate(_animationController)
+    );
+    _focusNode = NoKeyboardFocusNode();
   }
 
   _onToggleEmojiInput() {
-    SystemChannels.textInput.invokeMethod(
-      'TextInput.${!_emojiInputShown ? 'hide' : 'show' }'
-    );
+    SystemChannels.textInput.invokeMethod('TextInput.${!_emojiInputShown ? 'hide' : 'show' }');
     if (! _emojiInputShown) {
       Timer(Duration(milliseconds: 200), () {
         setState(() {
@@ -77,6 +99,7 @@ class _MessageInputState extends State<MessageInput> with SingleTickerProviderSt
   void dispose() {
     _textController.dispose();
     _animationController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -109,6 +132,8 @@ class _MessageInputState extends State<MessageInput> with SingleTickerProviderSt
                           child: EmojiTextField(
                             minLines: 1,
                             maxLines: 6,
+                            autofocus: true,
+                            focusNode: _focusNode,
                             onTap: _onTextFieldTapped,
                             cursorColor: const Color(0xff075e54),
                             controller: _textController,
@@ -124,28 +149,38 @@ class _MessageInputState extends State<MessageInput> with SingleTickerProviderSt
                             ),
                           ),
                         ),
-                        Transform.rotate(
-                          angle: -pi / 4,
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.attach_file, color: Colors.black54),
-                          ),
-                        ),
                         AnimatedBuilder(
-                          animation: _animationController,
-                          child:IconButton(
+                          animation: _animation,
+                          builder: (BuildContext context, Widget child) {
+                            final offset = Offset(_animation.value * 50.0, 0);
+                            final attachButton =  Transform.rotate(
+                              angle: -pi / 4,
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.attach_file, color: Colors.black54),
+                              ),
+                            );
+                            return Row(
+                              children: <Widget>[
+                                _noTextMode ? 
+                                Transform.translate(
+                                  offset: offset,
+                                  child: attachButton,
+                                ) : attachButton,
+                                if (_noTextMode) Opacity(
+                                  opacity: _noTextMode ? 1 : _animation.value,
+                                  child: Transform.translate(
+                                    offset: offset,
+                                    child: child,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                          child: IconButton(
                             onPressed: () {},
                             icon: Icon(Icons.photo_camera, color: Colors.black54,),
                           ),
-                          builder: (BuildContext context, Widget child) {
-                            return child;
-                            /*return Transform.translate(
-                              //offset: _animation.value,
-                              offset: Offset(_animationController.value * 100, 0),
-                              child: child,
-                            );
-                            */
-                          },
                         )
                       ],
                     ),
@@ -157,10 +192,35 @@ class _MessageInputState extends State<MessageInput> with SingleTickerProviderSt
                     borderRadius: BorderRadius.circular(30),
                     color: const Color(0xff075e54),
                   ),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.mic),
-                    color: Colors.white,
+                  child: AnimatedBuilder(
+                    animation: _animation,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.mic),
+                      color: Colors.white,
+                    ),
+                    builder: (context, child) {
+                      return Stack(
+                        children: <Widget>[
+                          Transform.scale(
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.mic),
+                              color: Colors.white,
+                            ),
+                            scale: (1 - _animation.value),
+                          ),
+                          Transform.scale(
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.send),
+                              color: Colors.white,
+                            ),
+                            scale: _animation.value,
+                          )
+                        ],
+                      );
+                    },
                   )
                 )
               ],
@@ -176,6 +236,9 @@ class _MessageInputState extends State<MessageInput> with SingleTickerProviderSt
                   _textController.text + emoji
                 );
               },
+              onBackPressed: () {
+                SystemChannels.keyEvent.send(8);
+              },
             ),
           )
         ],
@@ -189,9 +252,16 @@ class TextEditingControllerWithPosition extends TextEditingController {
 
   void setTextAndPosition(String newText, {int caretPosition}) {
     int offset = caretPosition != null ? caretPosition : newText.length;
+    print(newText);
+    print(offset);
     value = value.copyWith(
         text: newText,
         selection: TextSelection.collapsed(offset: offset),
         composing: TextRange.empty);
   }    
+}
+
+class NoKeyboardFocusNode extends FocusNode {
+  @override
+  bool consumeKeyboardToken() => false;
 }

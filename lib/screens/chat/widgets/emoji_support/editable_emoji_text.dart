@@ -1311,12 +1311,9 @@ class EditableEmojiTextState extends State<EditableEmojiText> with AutomaticKeep
       return TextSpan(
         style: widget.style,
         children: <TextSpan>[
-          TextSpan(text: _value.composing.textBefore(_value.text)),
-          TextSpan(
-            style: composingStyle,
-            text: _value.composing.textInside(_value.text),
-          ),
-          TextSpan(text: _value.composing.textAfter(_value.text)),
+          _buildRichTextSpan(_value.composing.textBefore(_value.text), widget.style),
+          _buildRichTextSpan(_value.composing.textInside(_value.text), composingStyle),
+          _buildRichTextSpan(_value.composing.textAfter(_value.text), widget.style),
       ]);
     }
 
