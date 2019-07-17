@@ -23,10 +23,7 @@ dependencies:
   english_words: ^3.1.0
   badges: ^1.0.3
   camera: ^0.5.2
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  keyboard_visibility: ^0.5.6
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +44,7 @@ flutter:
   assets:
     - lib/assets/imgs/avatar_contact.png
     - lib/assets/imgs/chat_background.png
+    - lib/assets/imgs/welcome_background.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

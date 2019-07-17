@@ -31,13 +31,15 @@ class NoKeyboardFocusNode extends FocusNode {
 
 class MessageInput extends StatefulWidget {
 
-  const MessageInput({
+  MessageInput({
     Key key,
     @required this.onCamera,
     @required this.onTextChange,
     @required this.onAttachment,
+    @required this.keyboardHeight,
   }) : super(key: key);
 
+  final double keyboardHeight;
   final VoidCallback onTextChange;
   final VoidCallback onAttachment;
   final VoidCallback onCamera;
@@ -160,13 +162,15 @@ class _MessageInputState extends State<MessageInput> with SingleTickerProviderSt
                     ),
                   ),
                 ),
-                SendAndMicInputButton(_animation),
+                SendAndMicInputButton(
+                  animation: _animation,
+                ),
               ],
             ),
           ),
           if (_inputMode == InputMode.EMOJI) Container(
             constraints: BoxConstraints(
-              maxHeight: 282,
+              maxHeight: widget.keyboardHeight,
             ),
             child: EmojiPicker(
               onEmojiPressed: (String emoji) {

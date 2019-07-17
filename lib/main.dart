@@ -1,22 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
+import 'screens/signup/welcome.dart';
 
-import 'widgets/app_navigator.dart' show AppNavigator;
-import 'screens/chatlist/chatlist.dart' show ChatList;
-import 'screens/status/status.dart' show StatusList;
-import 'screens/calls/calls.dart' show CallList;
-import 'screens/camera/camera.dart' show CameraWidget;
-
-Future<void> main() async {
-  final cameras = await availableCameras();
-  runApp(
-    MaterialApp( 
-      home: AppNavigator(
-        chatsWidget: ChatList(),
-        callsWidget: CallList(),
-        statusWidget: StatusList(),
-        cameraWidget: CameraWidget(camera: cameras.first),
-      ),
-    )
-  );
-}
+void main() => runApp(MaterialApp(home: Welcome()));

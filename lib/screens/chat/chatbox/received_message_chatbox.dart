@@ -33,7 +33,47 @@ class ReceivedMessageChatBox extends StatelessWidget {
                 ),
                 color: Colors.white,
               ),
-              child: EmojiRichText(text: _getRandomText(), fontSize: 15,),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          '+254 700 187 754',
+                          style: TextStyle(
+                            color: Colors.brown,
+                            fontWeight: FontWeight.bold,
+                          )
+                        )
+                      ),
+                      Text(
+                        '~johny',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontStyle: FontStyle.italic
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: EmojiRichText(text: _getRandomText(), fontSize: 15,),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        '2:30 AM',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
             ClipRect(
               clipper: ChatBoxTriangleClip(),

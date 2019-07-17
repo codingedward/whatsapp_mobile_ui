@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
+
 import 'chatbox/received_message_chatbox.dart';
 import 'chatbox/sent_message_chatbox.dart';
 import 'input/message_input.dart';
 
-class Chat extends StatelessWidget {
+class Chat extends  StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       appBar: _buildAppBar(context),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: ExactAssetImage('lib/assets/imgs/chat_background.png'),
             fit: BoxFit.cover,
@@ -21,7 +23,7 @@ class Chat extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.only(left: 10, right: 10),
-                itemCount: 100,
+                itemCount: 20,
                 itemBuilder: (context, index) {
                   if (index.isOdd) 
                     return SentMessageChatBox();
@@ -30,9 +32,10 @@ class Chat extends StatelessWidget {
               ),
             ),
             MessageInput(
-              onTextChange: () {},
               onCamera: () {},
+              onTextChange: () {},
               onAttachment: () {},
+              keyboardHeight: isPortrait ? 280 : 200,
             ),
           ],
         ),
@@ -83,6 +86,7 @@ class Chat extends StatelessWidget {
           ),
           SizedBox(width: 10,),
           Text('Lucy Doe'),
+          TextField()
         ]
       ),
       backgroundColor: Color(0xff075e54),

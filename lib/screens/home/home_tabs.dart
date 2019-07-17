@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class AppNavigator extends StatefulWidget {
-  const AppNavigator({
+class HomeTabs extends StatefulWidget {
+  const HomeTabs({
     Key key,
     @required this.cameraWidget,
     @required this.statusWidget,
@@ -17,10 +17,10 @@ class AppNavigator extends StatefulWidget {
   final Widget callsWidget;
 
   @override
-  _AppNavigatorState createState() => _AppNavigatorState();
+  _HomeTabsState createState() => _HomeTabsState();
 }
 
-class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderStateMixin {
+class _HomeTabsState extends State<HomeTabs>  with SingleTickerProviderStateMixin {
 
   bool _pinned = true;
   bool _camera = false;
@@ -105,11 +105,6 @@ class _AppNavigatorState extends State<AppNavigator>  with SingleTickerProviderS
           controller: _tabController,
           children: <Widget>[
             _camera ? widget.cameraWidget : Container(
-              child: Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                )
-              ),
               decoration: BoxDecoration(
                 color: Colors.black
               ),

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 class SendAndMicInputButton extends StatelessWidget {
   
-  SendAndMicInputButton(
-    this._animation, {
+  SendAndMicInputButton({
     Key key,
+    @required this.animation,
   }) : super(key: key);
 
-  final Animation _animation;
+  final Animation animation;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class SendAndMicInputButton extends StatelessWidget {
         color: const Color(0xff075e54),
       ),
       child: AnimatedBuilder(
-        animation: _animation,
+        animation: animation,
         child: IconButton(
           onPressed: () {},
           icon: const Icon(Icons.mic),
@@ -34,7 +34,7 @@ class SendAndMicInputButton extends StatelessWidget {
                   icon: const Icon(Icons.mic),
                   color: Colors.white,
                 ),
-                scale: (1 - _animation.value),
+                scale: (1 - animation.value),
               ),
               Transform.scale(
                 child: IconButton(
@@ -42,7 +42,7 @@ class SendAndMicInputButton extends StatelessWidget {
                   icon: const Icon(Icons.send),
                   color: Colors.white,
                 ),
-                scale: _animation.value,
+                scale: animation.value,
               )
             ],
           );

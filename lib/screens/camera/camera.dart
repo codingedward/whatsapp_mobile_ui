@@ -4,29 +4,29 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 class CameraWidget extends StatefulWidget {
-  final CameraDescription camera;
-
-  const CameraWidget({
-    Key key,
-    @required this.camera,
-  }) : super(key: key);
-
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
 }
 
 class TakePictureScreenState extends State<CameraWidget> {
   CameraController controller;
-  Future<void> _initializeControllerFuture;
+  Future<void> _initializeCameraFuture;
 
   @override
   void initState() {
     super.initState();
+    _initCamera();
+  }
+
+  _initCamera() async {
+    final cameras = await availableCameras();
     controller = CameraController(
-      widget.camera,
+      cameras[0],
       ResolutionPreset.high,
     );
-    _initializeControllerFuture = controller.initialize();
+    setState(() {
+      _initializeCameraFuture = controller.initialize();
+    });
   }
 
   @override
@@ -38,7 +38,7 @@ class TakePictureScreenState extends State<CameraWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-      future: _initializeControllerFuture,
+      future: _initializeCameraFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           final size = MediaQuery.of(context).size;
@@ -57,11 +57,6 @@ class TakePictureScreenState extends State<CameraWidget> {
           );
         } else {
           return Container(
-            child: Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
-              )
-            ),
             decoration: BoxDecoration(
               color: Colors.black
             ),
@@ -69,6 +64,5 @@ class TakePictureScreenState extends State<CameraWidget> {
         }
       },
     );
-       
   }
 }

@@ -90,19 +90,21 @@ class ChatList extends StatelessWidget {
                           ),
                         ),
                         if (isMute) Icon(Icons.volume_off, color: Colors.grey,),
-                        if (hasBadge) SizedBox(width: 5),
-                        if (hasBadge) Badge(
-                          elevation: 0,
-                          padding: EdgeInsets.all(8),
-                          badgeColor: Color(0xff25d366),
-                          badgeContent: Text(
-                            badgesCount.toString(), 
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12
+                        if (hasBadge) ...[
+                          SizedBox(width: 5),
+                          Badge(
+                            elevation: 0,
+                            padding: EdgeInsets.all(8),
+                            badgeColor: Color(0xff25d366),
+                            badgeContent: Text(
+                              badgesCount.toString(), 
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12
+                              ),
                             ),
                           ),
-                        ),
+                        ]                       
                       ],
                     ),
                     Divider(
