@@ -86,7 +86,6 @@ class Chat extends  StatelessWidget {
           ),
           SizedBox(width: 10,),
           Text('Lucy Doe'),
-          TextField()
         ]
       ),
       backgroundColor: Color(0xff075e54),

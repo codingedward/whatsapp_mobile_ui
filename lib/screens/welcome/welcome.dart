@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'signup.dart';
+import '../signup/signup.dart';
 
 class Welcome extends StatelessWidget {
   @override
@@ -20,7 +20,7 @@ class Welcome extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff075e54),
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
