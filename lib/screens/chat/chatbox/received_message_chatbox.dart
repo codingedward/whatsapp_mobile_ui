@@ -2,11 +2,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../widgets/emoji_rich_text.dart';
 import 'chatbox_clip.dart';
+import 'package:whatsapp_ui/widgets/emoji_rich_text.dart';
 
 class ReceivedMessageChatBox extends StatelessWidget {
-
   final _random = math.Random();
 
   @override

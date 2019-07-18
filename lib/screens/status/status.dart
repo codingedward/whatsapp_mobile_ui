@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
 class StatusList extends StatelessWidget {
-
   final _random = Random();
 
   @override
@@ -23,20 +22,19 @@ class StatusList extends StatelessWidget {
 
   Widget _buildGap(String gapText) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Text(
-          gapText,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+        margin: EdgeInsets.only(bottom: 20),
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
         ),
-      )
-    );
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Text(
+            gapText,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ));
   }
 
   Widget _buildMyStatusItem() {
@@ -66,11 +64,8 @@ class StatusList extends StatelessWidget {
                     padding: EdgeInsets.all(3),
                     badgeColor: Color(0xff25d366),
                     badgeContent: Text(
-                      '+', 
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24
-                      ),
+                      '+',
+                      style: TextStyle(color: Colors.white, fontSize: 24),
                     ),
                   ),
                 ),
@@ -79,44 +74,44 @@ class StatusList extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(top: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          'My status', 
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                padding: EdgeInsets.only(top: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            'My status',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.start,
                           ),
-                          textAlign: TextAlign.start,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(width: 3),
-                      Expanded(
-                        child: Text(
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(width: 3),
+                        Expanded(
+                            child: Text(
                           'Tap to add status update',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 15,
                           ),
-                        )
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ),
+                        )),
+                      ],
+                    ),
+                  ],
+                )),
           ),
         ],
       ),
@@ -145,47 +140,47 @@ class StatusList extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(top: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          WordPair.random().asPascalCase, 
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                padding: EdgeInsets.only(top: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            WordPair.random().asPascalCase,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.start,
                           ),
-                          textAlign: TextAlign.start,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(width: 3),
-                      Expanded(
-                        child: Text(
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(width: 3),
+                        Expanded(
+                            child: Text(
                           '$minutes minutes ago',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 15,
                           ),
-                        )
-                      ),
-                    ],
-                  ),
-                  Divider(
-                    height: 30,
-                  )
-                ],
-              )
-            ),
+                        )),
+                      ],
+                    ),
+                    Divider(
+                      height: 30,
+                    )
+                  ],
+                )),
           ),
         ],
       ),

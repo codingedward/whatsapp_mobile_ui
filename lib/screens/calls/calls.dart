@@ -1,10 +1,10 @@
-import 'dart:math';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+
 import 'package:english_words/english_words.dart';
 
 class CallList extends StatelessWidget {
-
-  final _random = Random();
+  final _random = math.Random();
 
   @override
   Widget build(BuildContext context) {

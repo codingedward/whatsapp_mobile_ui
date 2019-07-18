@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'emoji_support/emoji_text_field.dart';
 
 class MessageInputField extends StatelessWidget {
-
   MessageInputField({
     Key key,
     this.onTap,
@@ -35,5 +34,4 @@ class MessageInputField extends StatelessWidget {
       ),
     );
   }
-
 }

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 
 class SendAndMicInputButton extends StatelessWidget {
-  
   SendAndMicInputButton({
     Key key,
     @required this.animation,
-  }) : super(key: key);
+  }) : assert(animation != null), 
+       super(key: key);
 
   final Animation animation;
 

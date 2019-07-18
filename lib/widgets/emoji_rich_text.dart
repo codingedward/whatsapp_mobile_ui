@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EmojiRichText extends StatelessWidget{
-
+class EmojiRichText extends StatelessWidget {
   const EmojiRichText({
     Key key,
     @required this.text,
@@ -15,13 +14,13 @@ class EmojiRichText extends StatelessWidget{
     this.emojiFontFamily = 'EmojiOne',
     this.fontSize = 15,
     this.color = Colors.black87,
-  }) : assert(text != null),
-       assert(textAlign != null),
-       assert(softWrap != null),
-       assert(overflow != null),
-       assert(textScaleFactor != null),
-       assert(maxLines == null || maxLines > 0),
-       super(key: key);
+  })  : assert(text != null),
+        assert(textAlign != null),
+        assert(softWrap != null),
+        assert(overflow != null),
+        assert(textScaleFactor != null),
+        assert(maxLines == null || maxLines > 0),
+        super(key: key);
 
   final bool softWrap;
   final TextAlign textAlign;
@@ -50,18 +49,16 @@ class EmojiRichText extends StatelessWidget{
   }
 
   TextSpan _buildText(String text) {
-    final children = <TextSpan>[]; 
+    final children = <TextSpan>[];
     final runes = text.runes;
 
-    for (int i = 0; i < runes.length; /* empty */ ) {
+    for (int i = 0; i < runes.length; /* empty */) {
       int current = runes.elementAt(i);
       final isEmoji = current > 255;
-      final shouldBreak = isEmoji
-        ? (x) => x <= 255 
-        : (x) => x > 255;
+      final shouldBreak = isEmoji ? (x) => x <= 255 : (x) => x > 255;
 
       final chunk = <int>[];
-      while (! shouldBreak(current)) {
+      while (!shouldBreak(current)) {
         chunk.add(current);
         if (++i >= runes.length) break;
         current = runes.elementAt(i);
@@ -79,5 +76,5 @@ class EmojiRichText extends StatelessWidget{
     }
 
     return TextSpan(children: children);
-  } 
+  }
 }

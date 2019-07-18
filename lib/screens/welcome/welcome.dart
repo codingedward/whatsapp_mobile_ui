@@ -5,9 +5,9 @@ import '../signup/signup.dart';
 class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,20 +39,25 @@ class Welcome extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 11,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(text: 'Read our '),
-                          TextSpan(text: 'Privacy Policy', style: TextStyle(color: Colors.blue)),
-                          TextSpan(text: '. Tap "Agree and continue" to accept the '),
-                          TextSpan(text: ' Terms of Service', style: TextStyle(color: Colors.blue)),
-                        ],
-                      )
-                    ),
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 11,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(text: 'Read our '),
+                            TextSpan(
+                                text: 'Privacy Policy',
+                                style: TextStyle(color: Colors.blue)),
+                            TextSpan(
+                                text:
+                                    '. Tap "Agree and continue" to accept the '),
+                            TextSpan(
+                                text: ' Terms of Service',
+                                style: TextStyle(color: Colors.blue)),
+                          ],
+                        )),
                     MaterialButton(
                       color: Color(0xff25d366),
                       child: Text(
@@ -62,10 +67,8 @@ class Welcome extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignUp())
-                        );
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignUp()));
                       },
                     )
                   ],

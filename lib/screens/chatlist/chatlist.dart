@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:badges/badges.dart';
@@ -7,8 +7,7 @@ import '../../screens/chat/chat.dart';
 import '../../widgets/emoji_rich_text.dart';
 
 class ChatList extends StatelessWidget {
-
-  final _random = Random();
+  final _random = math.Random();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +64,7 @@ class ChatList extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: 15,
                             ),
                             textAlign: TextAlign.start,
                           ),
@@ -85,6 +84,7 @@ class ChatList extends StatelessWidget {
                         SizedBox(width: 3),
                         Expanded(
                           child: EmojiRichText(
+                            fontSize: 13,
                             overflow: TextOverflow.ellipsis,
                             text: _randomText(),
                           ),

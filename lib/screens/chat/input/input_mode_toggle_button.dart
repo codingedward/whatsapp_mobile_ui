@@ -8,8 +8,8 @@ class InputModeToggleButton extends StatelessWidget {
 
   InputModeToggleButton({
     Key key,
-    this.mode,
-    this.onChangeInputMode
+    @required this.mode,
+    @required this.onChangeInputMode
   }) : super(key: key);
 
   final InputMode mode;

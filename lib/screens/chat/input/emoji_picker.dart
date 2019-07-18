@@ -20,7 +20,8 @@ class Emoji {
   Emoji ({
     @required this.name,
     @required this.emoji
-  });
+  }) : assert(name != null),
+       assert(emoji != null);
 
   @override
   String toString() {
