@@ -1,4 +1,4 @@
-name: whatsapp_ui
+name: whatsapp
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -24,7 +24,8 @@ dependencies:
   badges: ^1.0.3
   camera: ^0.5.2
   flutter_sim_country_code: ^0.0.2
-
+  firebase_core: ^0.2.5+1
+  firebase_auth: ^0.7.0
 
 dev_dependencies:
   flutter_test:

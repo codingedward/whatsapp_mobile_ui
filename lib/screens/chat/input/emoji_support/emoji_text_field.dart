@@ -382,7 +382,6 @@ class _EmojiTextFieldState extends State<EmojiTextField>
       position: position,
       color: color,
       containedInkWell: true,
-      // TODO(hansmuller): splash clip borderRadius should match the input decorator's border.
       borderRadius: BorderRadius.zero,
       onRemoved: handleRemoved,
       textDirection: Directionality.of(context),
@@ -559,8 +558,6 @@ class _EmojiTextFieldState extends State<EmojiTextField>
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
     assert(debugCheckHasMaterial(context));
-    // TODO(jonahwilliams): uncomment out this check once we have migrated tests.
-    // assert(debugCheckHasMaterialLocalizations(context));
     assert(debugCheckHasDirectionality(context));
     assert(
       !(widget.style != null &&

@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../signup/signup.dart';
+class Welcome extends StatefulWidget {
+  @override
+  _WelcomeState createState() => _WelcomeState();
+}
 
-class Welcome extends StatelessWidget {
+class _WelcomeState extends State<Welcome> {
+  @override
+  void initState() {
+    super.initState();
+    _handleSignIn();
+  }
+
+  Future<void> _handleSignIn() async {
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,10 +78,10 @@ class Welcome extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: _handleSignIn /*() {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => SignUp()));
-                      },
+                      },*/
                     )
                   ],
                 ),

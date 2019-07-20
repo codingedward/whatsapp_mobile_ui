@@ -1,4 +1,4 @@
-package com.example.whatsapp_ui;
+package com.edwardnjoroge.whatsapp;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

@@ -18,9 +18,7 @@ class CountrySearchDelegate extends SearchDelegate<Country> {
     return [
       IconButton(
         icon: Icon(Icons.clear), 
-        onPressed:() {
-          query = '';
-        } 
+        onPressed:() => query = ''
       )
     ];
   }

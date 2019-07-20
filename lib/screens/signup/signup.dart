@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 
 import 'countries.dart';
 import 'country_search_delegate.dart';
 import '../home/home.dart';
 import '../signup/signup_message.dart';
+import '../../services/country_detection_service.dart';
+import '../../services/phone_verification_service.dart';
 
 class SignUp extends StatefulWidget {
   final countries = Countries();
@@ -27,20 +26,28 @@ class _SignUpState extends State<SignUp> {
     _initDefaultCountryFromLocale();
   }
 
-  Future<void> _initDefaultCountryFromLocale() async {
-    String countryCode;
-    try {
-      countryCode = await FlutterSimCountryCode.simCountryCode;
-    } on PlatformException {
-      countryCode = 'KE';
-    }
+  @override
+  void dispose() {
+    _phoneNumberFocusNode.dispose();
+    _countryCodeTextController.dispose();
+    super.dispose();
+  }
 
-    if (!mounted) return;
-
-    _setSelectedCountry(widget.countries.getBy(
-      field: CountryField.CODE,
-      value: countryCode,
-    ));
+  void _initDefaultCountryFromLocale() {
+    CountryDetectionService.instance.detect(
+      onFail: (error) {
+        _setSelectedCountry(widget.countries.getBy(
+          field: CountryField.CODE,
+          value: 'KE',
+        ));
+      },
+      onSuccess: (countryCode) {
+        _setSelectedCountry(widget.countries.getBy(
+          field: CountryField.CODE,
+          value: countryCode,
+        ));
+      }
+    );
   }
 
   void _onSearchCountryDelegateClosed(Country country) {
@@ -55,6 +62,16 @@ class _SignUpState extends State<SignUp> {
         _countryCodeTextController.text = _country.dial;
       });
     }
+  }
+
+  void _onVerifyPhoneNumber() {
+    final String phoneNumber = '${_countryCodeTextController.text}';
+    PhoneVerificationService.instance.attemptAutoVerify(
+      phoneNumber: phoneNumber,
+      onFail: (failed) {},
+      onSuccess: (phoneNumber) {},
+      onTimeout: (verficationId) {}
+    );
   }
 
   @override

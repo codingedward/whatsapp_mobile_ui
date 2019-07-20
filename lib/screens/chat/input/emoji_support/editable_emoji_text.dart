@@ -802,8 +802,6 @@ class EditableEmojiTextState extends State<EditableEmojiText>
     _startOrStopCursorTimerIfNeeded();
     _updateOrDisposeSelectionOverlayIfNeeded();
     _textChangedSinceLastCaretUpdate = true;
-    // TODO(abarth): Teach RenderEditable about ValueNotifier<TextEditingValue>
-    // to avoid this setState().
     setState(() {/* We use widget.controller.value in build(). */});
   }
 
