@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/screens/signup/dialogs/invalid_phone_number_dialog.dart';
+import 'package:whatsapp/screens/signup/phone_verification.dart';
 
 import 'countries.dart';
 import 'country_search_delegate.dart';
-import '../home/home.dart';
-import '../signup/signup_message.dart';
+import 'dialogs/confirm_phone_number_dialog.dart';
 import '../../services/country_detection_service.dart';
-import '../../services/phone_verification_service.dart';
+import '../../services/phone_number_format_service.dart';
 
 class SignUp extends StatefulWidget {
   final countries = Countries();
@@ -15,22 +16,43 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  Country _country;
+  Country _selectedCountry;
   final _phoneNumberFocusNode = FocusNode();
-  final _countryCodeTextController = TextEditingController();
+  final _dialCodeTextController = TextEditingController();
+  final _phoneNumberTextController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _setSelectedCountry(widget.countries.getBy(field: CountryField.CODE, value: 'KE'));
     _initDefaultCountryFromLocale();
+    _dialCodeTextController.addListener(_onCountryCodeChanged);
   }
 
   @override
   void dispose() {
     _phoneNumberFocusNode.dispose();
-    _countryCodeTextController.dispose();
+    _dialCodeTextController.dispose();
+    _phoneNumberTextController.dispose();
     super.dispose();
+  }
+
+  void _onCountryCodeChanged() {
+    final text = _dialCodeTextController.text;
+    if (_selectedCountry.code != text) {
+      Country selected = widget.countries.getBy(
+        field: CountryField.DIAL, 
+        value: text
+      );
+      if (selected == null) {
+        selected = Country(name: '(invalid country code)', code: '', flag: '', dial: text);
+      }  else {
+        FocusScope.of(context).requestFocus(_phoneNumberFocusNode);
+      }
+      _dialCodeTextController.removeListener(_onCountryCodeChanged);
+      _setSelectedCountry(selected);
+      _dialCodeTextController.addListener(_onCountryCodeChanged);
+    }
   }
 
   void _initDefaultCountryFromLocale() {
@@ -58,20 +80,51 @@ class _SignUpState extends State<SignUp> {
   void _setSelectedCountry(Country country) {
     if (country != null) {
       setState(() {
-        _country = country;
-        _countryCodeTextController.text = _country.dial;
+        _selectedCountry = country;
+        _dialCodeTextController.value = _dialCodeTextController.value.copyWith(
+          text: _selectedCountry.dial,
+        );
       });
     }
   }
 
-  void _onVerifyPhoneNumber() {
-    final String phoneNumber = '${_countryCodeTextController.text}';
-    PhoneVerificationService.instance.attemptAutoVerify(
-      phoneNumber: phoneNumber,
-      onFail: (failed) {},
-      onSuccess: (phoneNumber) {},
-      onTimeout: (verficationId) {}
+  Future<void> _onNext(BuildContext context) async {
+    String dialCode = _dialCodeTextController.text;
+    String phoneNumber = _phoneNumberTextController.text;
+    String fullPhoneNumber = '+$dialCode$phoneNumber';
+
+    bool isValid = await PhoneNumberFormatService.instance.isValid(
+      phoneNumber: fullPhoneNumber,
+      countryCode: _selectedCountry.code,
     );
+
+    if (isValid) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return ConfirmPhoneNumberDialog(
+            phoneNumber: fullPhoneNumber,
+            onOK: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => PhoneVerification(
+                  phoneNumber: fullPhoneNumber,
+                ))
+              );
+            }
+          );
+        }
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return InvalidPhoneNumberDialog(
+            countryName: _selectedCountry.name,
+          );
+        }
+      );
+    }
   }
 
   @override
@@ -82,7 +135,7 @@ class _SignUpState extends State<SignUp> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: <Widget>[
-              SignUpMessage(),
+              _buildSignUpMessage(),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -105,7 +158,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           child: Stack(
                             children: <Widget>[
-                              Center(child: Text(_country.name, style: TextStyle(fontSize: 16))),
+                              Center(child: Text(_selectedCountry.name, style: TextStyle(fontSize: 16))),
                               Positioned(
                                 right: 0,
                                 child: Icon(Icons.arrow_drop_down,
@@ -135,7 +188,7 @@ class _SignUpState extends State<SignUp> {
                                 TextField(
                                   textAlign: TextAlign.right,
                                   keyboardType: TextInputType.number,
-                                  controller: _countryCodeTextController,
+                                  controller: _dialCodeTextController,
                                 ),
                               ],
                             ),
@@ -145,6 +198,7 @@ class _SignUpState extends State<SignUp> {
                             child: TextField(
                               autofocus: true,
                               focusNode: _phoneNumberFocusNode,
+                              controller: _phoneNumberTextController,
                               keyboardType: TextInputType.number,
                               decoration: const InputDecoration(
                                 hintText: 'phone number',
@@ -162,13 +216,38 @@ class _SignUpState extends State<SignUp> {
                 color: Color(0xff25d366),
                 child: Text('NEXT', style: TextStyle(color: Colors.white)),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+                  _onNext(context);
                 },
               )
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildSignUpMessage() {
+    return Column(
+      children: <Widget>[
+        Center(
+          child: Text(
+            'Verify your phone number',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff075e54),
+            ),
+          ),
+        ),
+        SizedBox(height: 20,),
+        Center(
+          child: Text(
+            'WhatsApp will send an SMS message (carrier charges may apply) to verify your phone number. '
+            'Enter your country code and phone number:'
+          ),
+        ),
+      ],
     );
   }
 }

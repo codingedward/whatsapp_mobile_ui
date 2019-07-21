@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   
   english_words: ^3.1.0
+  libphonenumber: ^1.0.0
   badges: ^1.0.3
   camera: ^0.5.2
   flutter_sim_country_code: ^0.0.2
@@ -47,6 +48,7 @@ flutter:
     - lib/assets/imgs/avatar_contact.png
     - lib/assets/imgs/chat_background.png
     - lib/assets/imgs/welcome_background.png
+    - lib/assets/json/countries.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

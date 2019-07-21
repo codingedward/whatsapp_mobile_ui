@@ -1,20 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/screens/signup/signup.dart';
 
-class Welcome extends StatefulWidget {
-  @override
-  _WelcomeState createState() => _WelcomeState();
-}
-
-class _WelcomeState extends State<Welcome> {
-  @override
-  void initState() {
-    super.initState();
-    _handleSignIn();
-  }
-
-  Future<void> _handleSignIn() async {
-  }
-
+class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +17,7 @@ class _WelcomeState extends State<Welcome> {
                   'Welcome To WhatsApp',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
@@ -51,37 +38,30 @@ class _WelcomeState extends State<Welcome> {
                 child: Column(
                   children: <Widget>[
                     RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 11,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(text: 'Read our '),
-                            TextSpan(
-                                text: 'Privacy Policy',
-                                style: TextStyle(color: Colors.blue)),
-                            TextSpan(
-                                text:
-                                    '. Tap "Agree and continue" to accept the '),
-                            TextSpan(
-                                text: ' Terms of Service',
-                                style: TextStyle(color: Colors.blue)),
-                          ],
-                        )),
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 11,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(text: 'Read our '),
+                          TextSpan( text: 'Privacy Policy', style: TextStyle(color: Colors.blue)),
+                          TextSpan( text: '. Tap "Agree and continue" to accept the '),
+                          TextSpan( text: ' Terms of Service', style: TextStyle(color: Colors.blue)),
+                        ],
+                      )
+                    ),
                     MaterialButton(
                       color: Color(0xff25d366),
                       child: Text(
                         'AGREE AND CONTINUE',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                        style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: _handleSignIn /*() {
+                      onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => SignUp()));
-                      },*/
+                      },
                     )
                   ],
                 ),
